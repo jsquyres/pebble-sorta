@@ -184,6 +184,7 @@ static void sorta_tap_handler(AccelAxisType axis, int32_t direction) {
     // we went to exact time, it will reset back to fuzzy time.
 
     if (!display_sorta) {
+        wakeup_cancel_all();
         wakeup_service_subscribe(sorta_wakeup_restore_sorta_time);
 
         time_t t = time(NULL);
@@ -210,6 +211,7 @@ void sorta_update_shake(void) {
     } else {
         accel_tap_service_unsubscribe();
     }
+    sorta_update(true);
 }
 
 /*************************************************************************/
@@ -238,7 +240,6 @@ void sorta_init(void) {
     // Register to receive configuration messages
     app_message_register_inbox_received(sorta_inbox_received_callback);
     app_message_register_inbox_dropped(sorta_inbox_dropped_callback);
-
     app_message_open(app_message_inbox_size_maximum(), 0);
 }
 
