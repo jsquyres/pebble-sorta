@@ -2,6 +2,7 @@
   "uuid": "c18860f4-462a-44e7-a1ee-25acacf66b75",
   "shortName": "sorta",
   "longName": "sorta",
+  "capabilities": [ "configurable" ],
   "companyName": "Jeff Squyres",
   "versionCode": 1,
   "versionLabel": "1.0",
@@ -11,7 +12,8 @@
     "watchface": true
   },
   "appKeys": {
-    "dummy": 0
+      "KEY_ENABLE_SHAKE_EXACT": 0,
+      "KEY_SHAKE_EXACT_TIMEOUT": 1
   },
   "resources": {
     "media": [

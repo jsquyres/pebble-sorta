@@ -5,10 +5,11 @@
 
 #include "main.h"
 
-// Global behavior values
+// Local behavior values
 static int display_sorta = true;
 static time_t display_exact_until = 0;
 
+/**********************************************************************/
 
 static void window_load(Window *window) {
     Layer *window_layer = window_get_root_layer(window);
@@ -168,7 +169,7 @@ void sorta_wakeup_restore_sorta_time() {
 // Handler for the tap (shake) service
 //
 static void sorta_tap_handler(AccelAxisType axis, int32_t direction) {
-    // We don't care what tap/shake happened -- just flip it.
+    // We don't care what tap/shake happened -- just that it happened.
     display_sorta = !display_sorta;
 
     // If we are now displaying exact, set a timeout for returning to
@@ -186,9 +187,9 @@ static void sorta_tap_handler(AccelAxisType axis, int32_t direction) {
         wakeup_service_subscribe(sorta_wakeup_restore_sorta_time);
 
         time_t t = time(NULL);
-        display_exact_until = t + 5;
+        display_exact_until = t + sorta_shake_exact_timeout;
 
-        for (int i = 5; i < 120; ++i) {
+        for (int i = sorta_shake_exact_timeout; i < 120; ++i) {
             int ret;
             ret = wakeup_schedule(t + i, 0, false);
             if (0 == ret) {
@@ -202,6 +203,17 @@ static void sorta_tap_handler(AccelAxisType axis, int32_t direction) {
 
 /*************************************************************************/
 
+void sorta_update_shake(void) {
+    if (sorta_enable_shake_exact) {
+        // Register with the Tap (shake) service
+        accel_tap_service_subscribe(sorta_tap_handler);
+    } else {
+        accel_tap_service_unsubscribe();
+    }
+}
+
+/*************************************************************************/
+
 void sorta_init(void) {
     // Main window
     s_main_window = window_create();
@@ -211,6 +223,10 @@ void sorta_init(void) {
     });
     window_stack_push(s_main_window, false);
 
+    // Read in the persistent config values
+    sorta_persist_load();
+    sorta_update_shake();
+
     // Register with TickTimerService
     tick_timer_service_subscribe(MINUTE_UNIT, sorta_tick_handler);
     sorta_update(true);
@@ -219,14 +235,22 @@ void sorta_init(void) {
     sorta_battery_handler(battery_state_service_peek());
     battery_state_service_subscribe(sorta_battery_handler);
 
-    // Register with the Tap (shake) service
-    accel_tap_service_subscribe(sorta_tap_handler);
+    // Register to receive configuration messages
+    app_message_register_inbox_received(sorta_inbox_received_callback);
+    app_message_register_inbox_dropped(sorta_inbox_dropped_callback);
+
+    app_message_open(app_message_inbox_size_maximum(), 0);
 }
 
 void sorta_finalize(void) {
+    // Save config values
+    sorta_persist_save();
+
+    // Unsubscribe from everything
     accel_tap_service_unsubscribe();
     battery_state_service_unsubscribe();
     tick_timer_service_unsubscribe();
 
+    // Destroy the window
     window_destroy(s_main_window);
 }

@@ -20,10 +20,14 @@ extern TextLayer *s_battery_layer;
 extern GFont s_battery_font;
 
 extern const int margin_offset;
+extern const int sorta_persistent_abi;
+extern bool sorta_enable_shake_exact;
+extern uint32_t sorta_shake_exact_timeout;
 
 
 void sorta_init(void);
 void sorta_finalize(void);
+void sorta_update_shake(void);
 
 void sorta_battery_handler(BatteryChargeState charge);
 
@@ -33,4 +37,11 @@ void sorta_update_exact_time(struct tm *tm);
 void sorta_update_sorta_date(struct tm *tm);
 void sorta_update_exact_date(struct tm *tm);
 
+void sorta_persist_load(void);
+void sorta_persist_save(void);
+
+void sorta_inbox_received_callback(DictionaryIterator *iterator,
+                                   void *context);
+ void sorta_inbox_dropped_callback(AppMessageResult reason,
+                                   void *context);
 #endif

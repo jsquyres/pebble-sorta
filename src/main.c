@@ -18,6 +18,9 @@ TextLayer *s_battery_layer;
 GFont s_battery_font;
 
 const int margin_offset = 5;
+const int sorta_persistent_abi = 1;
+bool sorta_enable_shake_exact = true;
+uint32_t sorta_shake_exact_timeout = 5;
 
 
 int main(void) {
