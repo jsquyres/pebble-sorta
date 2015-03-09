@@ -71,7 +71,7 @@ static void window_load(Window *window) {
             }
         });
     s_exact_time_font =
-        fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_TIME_38));
+        fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_TIME_34));
     text_layer_set_font(s_exact_time_layer, s_exact_time_font);
     text_layer_set_text_alignment(s_exact_time_layer, GTextAlignmentCenter);
     text_layer_set_background_color(s_exact_time_layer, GColorClear);
