@@ -27,6 +27,9 @@ void sorta_battery_handler(BatteryChargeState charge) {
         charge.is_plugged) {
         snprintf(charge_str, sizeof(charge_str) - 1, "%2d%%",
                  charge.charge_percent);
+
+        // JMS would be good to print a charging icon if
+        // charge.is_charging or charge.is_plugged is true.
     }
 
     text_layer_set_text(s_battery_layer, charge_str);
