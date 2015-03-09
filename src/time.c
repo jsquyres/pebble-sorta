@@ -177,7 +177,7 @@ void sorta_update_sorta_time(struct tm *tm) {
     }
 
     // Hour name (easy)
-    char *hour_name = hour_names[tm->tm_hour % 12];
+    char *hour_name = hour_names[hour % 12];
 
     // Get the minute name
     char *minute_name = minute_names[quarter_min];
