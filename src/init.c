@@ -6,7 +6,9 @@
 #include "main.h"
 
 // Global behavior values
-static int sorta = true;
+static int display_sorta = true;
+static time_t display_exact_until = 0;
+
 
 static void window_load(Window *window) {
     Layer *window_layer = window_get_root_layer(window);
@@ -114,19 +116,29 @@ static void window_unload(Window *window) {
 /**********************************************************************/
 
 static void sorta_update(bool reset) {
-    time_t temp = time(NULL);
-    struct tm *tm = localtime(&temp);
+    time_t t = time(NULL);
+    struct tm *tm = localtime(&t);
+
+    // Do we need to flip back from exact to sorta time display?
+    if (0 != display_exact_until &&
+        time(NULL) >= display_exact_until) {
+        display_sorta = true;
+        display_exact_until = 0;
+        wakeup_cancel_all();
+    }
 
     // NOTE: if reset==true, that means we need to clear out the time
     // text layer that is not being used
 
-    if (sorta) {
+    if (display_sorta) {
+        // Display the fuzzy time
         if (reset) {
             text_layer_set_text(s_exact_time_layer, "");
         }
         sorta_update_sorta_time(tm);
         sorta_update_sorta_date(tm);
     } else {
+        // Display the exact time
         if (reset) {
             text_layer_set_text(s_sorta_time_layer, "");
         }
@@ -137,9 +149,9 @@ static void sorta_update(bool reset) {
 
 /*************************************************************************/
 
-/*
- * Handler for the tick service
- */
+//
+// Handler for the tick service
+//
 static void sorta_tick_handler(struct tm *tick_time,
                                TimeUnits units_changed) {
     sorta_update(false);
@@ -147,17 +159,45 @@ static void sorta_tick_handler(struct tm *tick_time,
 
 /*************************************************************************/
 
-static void flip(void) {
-    sorta = !sorta;
+void sorta_wakeup_restore_sorta_time() {
+    display_exact_until = 1;
     sorta_update(true);
 }
 
-/*
- * Handler for the tap service
- * (doesn't work very well :-( )
- */
+//
+// Handler for the tap (shake) service
+//
 static void sorta_tap_handler(AccelAxisType axis, int32_t direction) {
-    flip();
+    // We don't care what tap/shake happened -- just flip it.
+    display_sorta = !display_sorta;
+
+    // If we are now displaying exact, set a timeout for returning to
+    // fuzzy time.  Do it two ways:
+    //
+    // 1. Set a wakeup timer for 5 seconds from now.  PebbleOS sets
+    // restrictions on wakeup timers, however, so try starting 5
+    // seconds from now, up to two minutes from now.  If we can't set
+    // a wakeup in that time, we'll end up falling over to method #2.
+    //
+    // 2. If the next minute tick handler fires after 15 seconds after
+    // we went to exact time, it will reset back to fuzzy time.
+
+    if (!display_sorta) {
+        wakeup_service_subscribe(sorta_wakeup_restore_sorta_time);
+
+        time_t t = time(NULL);
+        display_exact_until = t + 5;
+
+        for (int i = 5; i < 120; ++i) {
+            int ret;
+            ret = wakeup_schedule(t + i, 0, false);
+            if (0 == ret) {
+                break;
+            }
+        }
+    }
+
+    sorta_update(true);
 }
 
 /*************************************************************************/
@@ -179,7 +219,7 @@ void sorta_init(void) {
     sorta_battery_handler(battery_state_service_peek());
     battery_state_service_subscribe(sorta_battery_handler);
 
-    // Register with the Tap service
+    // Register with the Tap (shake) service
     accel_tap_service_subscribe(sorta_tap_handler);
 }
 
