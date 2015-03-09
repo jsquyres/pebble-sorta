@@ -40,22 +40,22 @@ struct day_part {
 
 static struct day_part day_parts[] = {
     {
-        .name = "morning",
+        .name = "in the morning",
         .hour_start = 0,
         .hour_end = 11
     },
     {
-        .name = "afternoon",
+        .name = "in the afternoon",
         .hour_start = 12,
         .hour_end = 17
     },
     {
-        .name = "evening",
+        .name = "in the evening",
         .hour_start = 18,
         .hour_end = 20
     },
     {
-        .name = "night",
+        .name = "at night",
         .hour_start = 21,
         .hour_end = 23
     },
@@ -195,7 +195,7 @@ void sorta_update_sorta_time(struct tm *tm) {
     // Make the final time string by concatenating all the strings
     // together
     snprintf(time_str, sizeof(time_str) - 1,
-             "%s%s %s in the %s",
+             "%s%s %s %s",
              sorta_name, hour_name, minute_name, day_part_name);
 
     text_layer_set_text(s_sorta_time_layer, time_str);
