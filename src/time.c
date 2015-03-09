@@ -39,29 +39,11 @@ struct day_part {
 };
 
 static struct day_part day_parts[] = {
-    {
-        .name = "in the morning",
-        .hour_start = 0,
-        .hour_end = 11
-    },
-    {
-        .name = "in the afternoon",
-        .hour_start = 12,
-        .hour_end = 17
-    },
-    {
-        .name = "in the evening",
-        .hour_start = 18,
-        .hour_end = 20
-    },
-    {
-        .name = "at night",
-        .hour_start = 21,
-        .hour_end = 23
-    },
-    {
-        .name = NULL
-    }
+    { .hour_start = 0,  .hour_end = 11, .name = "in the morning" },
+    { .hour_start = 12, .hour_end = 17, .name = "in the afternoon" },
+    { .hour_start = 18, .hour_end = 20, .name = "in the evening" },
+    { .hour_start = 21, .hour_end = 23, .name = "at night" },
+    { .name = NULL }
 };
 
 static bool sorta_vals_initialized = false;
@@ -75,44 +57,14 @@ struct sorta_name {
 };
 
 static struct sorta_name sorta_names[] = {
-    {
-        .name = "around ",
-        .minute_start = -7,
-        .minute_end = -6
-    },
-    {
-        .name = "about ",
-        .minute_start = -5,
-        .minute_end = -4
-    },
-    {
-        .name = "nearly ",
-        .minute_start = -3,
-        .minute_end = -1
-    },
-    {
-        .name = "",
-        .minute_start = 0,
-        .minute_end = 0
-    },
-    {
-        .name = "just after ",
-        .minute_start = 1,
-        .minute_end = 3
-    },
-    {
-        .name = "about ",
-        .minute_start = 4,
-        .minute_end = 5
-    },
-    {
-        .name = "around ",
-        .minute_start = 6,
-        .minute_end = 7
-    },
-    {
-        .name = NULL
-    }
+    { .minute_start = -7, .minute_end = -6, .name = "around " },
+    { .minute_start = -5, .minute_end = -4, .name = "about " },
+    { .minute_start = -3, .minute_end = -1, .name = "nearly " },
+    { .minute_start = 0,  .minute_end = 0,  .name = "" },
+    { .minute_start = 1,  .minute_end = 3,  .name = "just after " },
+    { .minute_start = 4,  .minute_end = 5,  .name = "a little after " },
+    { .minute_start = 6,  .minute_end = 7,  .name = "after " },
+    { .name = NULL }
 };
 
 /**********************************************************************/
@@ -132,6 +84,7 @@ static void init_sorta_vals(void) {
             sorta_minute_max = sorta_names[i].minute_end;
         }
     }
+
     sorta_vals_initialized = true;
 }
 
