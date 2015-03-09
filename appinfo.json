@@ -1,0 +1,44 @@
+{
+  "uuid": "c18860f4-462a-44e7-a1ee-25acacf66b75",
+  "shortName": "sorta",
+  "longName": "sorta",
+  "companyName": "Jeff Squyres",
+  "versionCode": 1,
+  "versionLabel": "1.0",
+  "sdkVersion": "3",
+  "targetPlatforms": ["aplite", "basalt"],
+  "watchapp": {
+    "watchface": true
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": [
+	{
+	    "type": "font",
+	    "name": "FONT_BATTERY_14",
+	    "file": "fonts/RobotoCondensed-Regular.ttf",
+	    "compatibility": "2.7"
+	},
+	{
+	    "type": "font",
+	    "name": "FONT_DATE_14",
+	    "file": "fonts/RobotoCondensed-Regular.ttf",
+	    "compatibility": "2.7"
+	},
+	{
+	    "type": "font",
+	    "name": "FONT_TIME_26",
+	    "file": "fonts/Passing Notes.ttf",
+	    "compatibility": "2.7"
+	},
+	{
+	    "type": "font",
+	    "name": "FONT_TIME_38",
+	    "file": "fonts/Passing Notes.ttf",
+	    "compatibility": "2.7"
+	}
+    ]
+  }
+}
