@@ -164,7 +164,7 @@ void sorta_update_sorta_time(struct tm *tm) {
     // of the next hour
     if (4 == quarter_min) {
         quarter_min = 0;
-        hour = (hour + 1) % 12;
+        hour = (hour + 1) % 24;
     }
 
     char *sorta_name = NULL;
