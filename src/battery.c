@@ -8,7 +8,7 @@
 
 void sorta_battery_handler(BatteryChargeState charge) {
     static char charge_str[8];
-    charge_str[0] = charge_str[sizeof(charge_str) - 1] = '\0';
+    charge_str[sizeof(charge_str) - 1] = '\0';
 
     // Only draw something if there is a change
     static BatteryChargeState last_charge = { 0 };
