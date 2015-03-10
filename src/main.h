@@ -16,8 +16,10 @@ extern TextLayer *s_exact_time_layer;
 extern GFont s_exact_time_font;
 extern TextLayer *s_date_layer;
 extern GFont s_date_font;
-extern TextLayer *s_battery_layer;
-extern GFont s_battery_font;
+extern TextLayer *s_battery_charge_layer;
+extern GFont s_battery_charge_font;
+extern GBitmap *s_battery_icon;
+extern BitmapLayer *s_battery_icon_layer;
 
 extern const int margin_offset;
 extern const int sorta_persistent_abi;

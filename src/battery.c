@@ -35,9 +35,12 @@ void sorta_battery_handler(BatteryChargeState charge) {
     } else {
         battery_percentage_str[0] = '\0';
     }
+    text_layer_set_text(s_battery_charge_layer, battery_percentage_str);
 
-    // JMS would be good to print a charging icon if
-    // charge.is_charging or charge.is_plugged is true.
-
-    text_layer_set_text(s_battery_layer, battery_percentage_str);
+    // If we're plugged in, un-hide the battery charge icon
+    if (charge.is_plugged) {
+        layer_set_hidden(bitmap_layer_get_layer(s_battery_icon_layer), false);
+    } else {
+        layer_set_hidden(bitmap_layer_get_layer(s_battery_icon_layer), true);
+    }
 }

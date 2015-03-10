@@ -17,21 +17,59 @@ static void window_load(Window *window) {
 
     window_set_background_color(window, GColorWhite);
 
-    // Battery: top right corner
+    // Battery charge percentage: top right corner
     int width = 30;
     int height = 14;
     int x = bounds.size.w - width;
     int y = 0;
-    s_battery_layer = text_layer_create(GRect(x, y, width, height));
-    s_battery_font =
+    s_battery_charge_layer = text_layer_create((GRect) {
+            .origin = {
+                .x = x,
+                .y = y
+            },
+            .size = {
+                .w = width,
+                .h = height
+            }
+        });
+    s_battery_charge_font =
         fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_BATTERY_14));
-    text_layer_set_font(s_battery_layer, s_battery_font);
-    text_layer_set_text_alignment(s_battery_layer, GTextAlignmentLeft);
-    text_layer_set_background_color(s_battery_layer, GColorClear);
-    text_layer_set_text_color(s_battery_layer, GColorBlack);
+    text_layer_set_font(s_battery_charge_layer, s_battery_charge_font);
+    text_layer_set_text_alignment(s_battery_charge_layer,
+                                  GTextAlignmentLeft);
+    text_layer_set_background_color(s_battery_charge_layer, GColorClear);
+    text_layer_set_text_color(s_battery_charge_layer, GColorBlack);
     layer_add_child(window_layer,
-                    text_layer_get_layer(s_battery_layer));
+                    text_layer_get_layer(s_battery_charge_layer));
 
+    // Charging icon: top right corner
+    s_battery_icon =
+        gbitmap_create_with_resource(RESOURCE_ID_IMAGE_CHARGING);
+#ifdef PBL_PLATFORM_BASALT
+    width = gbitmap_get_bounds(s_battery_icon).size.w;
+    height = gbitmap_get_bounds(s_battery_icon).size.h;
+#else
+    width = s_battery_icon->bounds.size.w;
+    height = s_battery_icon->bounds.size.h;
+#endif
+    x -= width;
+    y = 0;
+    s_battery_icon_layer = bitmap_layer_create((GRect) {
+            .origin = {
+                .x = x,
+                .y = y
+            },
+            .size = {
+                .w = width,
+                .h = height
+            }
+        });
+    bitmap_layer_set_alignment(s_battery_icon_layer, GAlignLeft);
+    bitmap_layer_set_background_color(s_battery_icon_layer, GColorClear);
+    bitmap_layer_set_bitmap(s_battery_icon_layer, s_battery_icon);
+    layer_set_hidden(bitmap_layer_get_layer(s_battery_icon_layer), true);
+    layer_add_child(window_layer,
+                    bitmap_layer_get_layer(s_battery_icon_layer));
 
     // Date: bottom middle
     width = bounds.size.w - margin_offset * 2;
@@ -106,12 +144,17 @@ static void window_load(Window *window) {
 static void window_unload(Window *window) {
     text_layer_destroy(s_sorta_time_layer);
     fonts_unload_custom_font(s_sorta_time_font);
+
     text_layer_destroy(s_exact_time_layer);
     fonts_unload_custom_font(s_exact_time_font);
+
     text_layer_destroy(s_date_layer);
     fonts_unload_custom_font(s_date_font);
-    text_layer_destroy(s_battery_layer);
-    fonts_unload_custom_font(s_battery_font);
+
+    text_layer_destroy(s_battery_charge_layer);
+    fonts_unload_custom_font(s_battery_charge_font);
+    bitmap_layer_destroy(s_battery_icon_layer);
+    gbitmap_destroy(s_battery_icon);
 }
 
 /**********************************************************************/

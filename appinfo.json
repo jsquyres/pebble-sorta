@@ -40,6 +40,12 @@
 	    "name": "FONT_TIME_34",
 	    "file": "fonts/Passing Notes.ttf",
 	    "compatibility": "2.7"
+	},
+	{
+	    "type": "png",
+	    "name": "IMAGE_CHARGING",
+	    "file": "images/Battery-Charge-icon.png",
+	    "compatibility": "2.7"
 	}
     ]
   }
