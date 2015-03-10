@@ -14,6 +14,20 @@ Finally, the battery percentage will appear in the top right if your
 battery is around 30% or less (or if you have it plugged in, so you
 can tell when it's fully charged).
 
-Enjoy!
+# Why?
 
-- Jeff Squyres
+This app is pretty useless.  :-)
+
+It's mainly a vehicle for me to explore different aspects of the
+Pebble OS, such as:
+
+* Basic watchface functionality
+* Fonts
+* Tick timer events
+* Wakeup timer events
+* Simple bitmap manipulation
+* Static storage
+* AppMessage interactions
+* Configuration window / interaction with JavaScript
+
+Enjoy!
