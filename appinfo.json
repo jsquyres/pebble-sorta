@@ -12,8 +12,8 @@
     "watchface": true
   },
   "appKeys": {
-      "KEY_ENABLE_SHAKE_EXACT": 0,
-      "KEY_SHAKE_EXACT_TIMEOUT": 1
+      "KEY_SHAKE_ENABLE": 0,
+      "KEY_SHAKE_TIMEOUT": 1
   },
   "resources": {
     "media": [

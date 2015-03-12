@@ -8,6 +8,11 @@
 #include <string.h>
 
 
+static TextLayer *s_date_layer = NULL;
+static GFont s_date_font = { 0 };
+
+static char date_str[128] = { '\0' };
+
 static char *month_names[] = {
     "January",
     "February",
@@ -51,12 +56,44 @@ static struct month_part month_parts[] = {
     }
 };
 
-/**********************************************************************/
 
-static char date_str[128];
+void sorta_date_window_load(Window *window) {
+    Layer *window_layer = window_get_root_layer(window);
+    GRect bounds = layer_get_bounds(window_layer);
+
+    // Date: bottom middle
+    int width = bounds.size.w - margin_offset * 2;
+    int height = 20;
+    int x = margin_offset;
+    int y = bounds.size.h - height - margin_offset;
+    s_date_layer = text_layer_create((GRect) {
+            .origin = {
+                .x = x,
+                .y = y
+            },
+            .size = {
+                .w = width,
+                .h = height
+            }
+        });
+    s_date_font =
+        fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_DATE_14));
+    text_layer_set_font(s_date_layer, s_date_font);
+    text_layer_set_text_alignment(s_date_layer, GTextAlignmentCenter);
+    text_layer_set_background_color(s_date_layer, GColorClear);
+    text_layer_set_text_color(s_date_layer, GColorBlack);
+    layer_add_child(window_layer, text_layer_get_layer(s_date_layer));
+}
+
+void sorta_date_window_unload(Window *window) {
+    text_layer_destroy(s_date_layer);
+    fonts_unload_custom_font(s_date_font);
+}
+
+/*************************************************************************/
 
 // Print a fuzzy date
-void sorta_update_sorta_date(struct tm *tm) {
+static void sorta_date_display_sorta(struct tm *tm) {
     date_str[sizeof(date_str) - 1] = '\0';
 
     char *month_part = NULL;
@@ -74,9 +111,24 @@ void sorta_update_sorta_date(struct tm *tm) {
 }
 
 // Print the exact date
-void sorta_update_exact_date(struct tm *tm) {
+static void sorta_date_display_exact(struct tm *tm) {
     date_str[sizeof(date_str) - 1] = '\0';
 
     strftime(date_str, sizeof(date_str) - 1, "%a, %b %e, %Y", tm);
     text_layer_set_text(s_date_layer, date_str);
+}
+
+void sorta_date_display(struct tm *tm, sorta_display_mode_t mode) {
+    switch (mode) {
+    case SORTA_DISPLAY_MODE_SORTA:
+        sorta_date_display_sorta(tm);
+        break;
+
+    case SORTA_DISPLAY_MODE_EXACT:
+        sorta_date_display_exact(tm);
+        break;
+
+    default:
+        break;
+    }
 }

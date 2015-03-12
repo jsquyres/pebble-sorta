@@ -9,41 +9,47 @@
 #include <pebble.h>
 
 
-extern Window *s_main_window;
-extern TextLayer *s_sorta_time_layer;
-extern GFont s_sorta_time_font;
-extern TextLayer *s_exact_time_layer;
-extern GFont s_exact_time_font;
-extern TextLayer *s_date_layer;
-extern GFont s_date_font;
-extern TextLayer *s_battery_charge_layer;
-extern GFont s_battery_charge_font;
-extern GBitmap *s_battery_icon;
-extern BitmapLayer *s_battery_icon_layer;
-
+// main.c
 extern const int margin_offset;
-extern const int sorta_persistent_abi;
-extern bool sorta_enable_shake_exact;
-extern uint32_t sorta_shake_exact_timeout;
 
+// persist.c
+extern bool sorta_shake_enable;
+extern uint32_t sorta_shake_timeout;
+
+typedef enum {
+    SORTA_DISPLAY_MODE_SORTA,
+    SORTA_DISPLAY_MODE_EXACT,
+    SORTA_DISPLAY_MODE_MAX
+} sorta_display_mode_t;
 
 void sorta_init(void);
 void sorta_finalize(void);
-void sorta_update_shake(void);
+void sorta_display(void);
 
-void sorta_battery_handler(BatteryChargeState charge);
+void sorta_battery_window_load(Window *window);
+void sorta_battery_window_unload(Window *window);
+void sorta_battery_init(void);
+void sorta_battery_finalize(void);
 
-void sorta_update_sorta_time(struct tm *tm);
-void sorta_update_exact_time(struct tm *tm);
+void sorta_time_window_load(Window *window);
+void sorta_time_window_unload(Window *window);
+void sorta_time_display(struct tm *tm, sorta_display_mode_t mode);
 
-void sorta_update_sorta_date(struct tm *tm);
-void sorta_update_exact_date(struct tm *tm);
+void sorta_date_window_load(Window *window);
+void sorta_date_window_unload(Window *window);
+void sorta_date_display(struct tm *tm, sorta_display_mode_t mode);
 
 void sorta_persist_load(void);
 void sorta_persist_save(void);
+
+void sorta_shake_init(void);
+void sorta_shake_update(void);
+sorta_display_mode_t sorta_shake_get_display_mode(void);
+void sorta_shake_finalize(void);
 
 void sorta_inbox_received_callback(DictionaryIterator *iterator,
                                    void *context);
  void sorta_inbox_dropped_callback(AppMessageResult reason,
                                    void *context);
+
 #endif

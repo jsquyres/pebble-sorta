@@ -6,8 +6,8 @@
 #include "main.h"
 
 enum {
-    KEY_ENABLE_SHAKE_EXACT = 0,
-    KEY_SHAKE_EXACT_TIMEOUT = 1
+    KEY_SHAKE_ENABLE = 0,
+    KEY_SHAKE_TIMEOUT = 1
 };
 
 /*************************************************************************/
@@ -19,12 +19,12 @@ void sorta_inbox_received_callback(DictionaryIterator *iterator,
 
     while (NULL != t) {
         switch (t->key) {
-        case KEY_ENABLE_SHAKE_EXACT:
-            sorta_enable_shake_exact = (bool) t->value->int32;
+        case KEY_SHAKE_ENABLE:
+            sorta_shake_enable = (bool) t->value->int32;
             break;
 
-        case KEY_SHAKE_EXACT_TIMEOUT:
-            sorta_shake_exact_timeout = t->value->uint32;
+        case KEY_SHAKE_TIMEOUT:
+            sorta_shake_timeout = t->value->uint32;
             break;
 
         default:
@@ -37,7 +37,7 @@ void sorta_inbox_received_callback(DictionaryIterator *iterator,
     }
 
     // Now that we have config data, update the callbacks
-    sorta_update_shake();
+    sorta_shake_update();
 }
 
 void sorta_inbox_dropped_callback(AppMessageResult reason,

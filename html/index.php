@@ -17,8 +17,8 @@
       <div data-role="content">
 
         <div data-role="fieldcontain">
-          <label for="shake_exact">Shake to show exact time:</label>
-          <select name="shake_exact" id="shake_exact" data-role="slider">
+          <label for="shake_enable">Shake to show exact time:</label>
+          <select name="shake_enable" id="shake_enable" data-role="slider">
             <option value="off">Off</option>
             <option value="on" selected="selected">On</option>
           </select>
@@ -27,14 +27,14 @@
         <div data-role="fieldcontain">
           <fieldset data-role="controlgroup">
             <legend>How many seconds to display the exact time:</legend>
-            <input type="radio" name="radio-exact-time" id="exact_5" class="custom" checked="checked"/>
-            <label for="exact_5">5 seconds</label>
+            <input type="radio" name="radio-timeout" id="timeout_5" class="custom" checked="checked"/>
+            <label for="timeout_5">5 seconds</label>
 
-            <input type="radio" name="radio-exact-time" id="exact_10" class="custom" />
-            <label for="exact_10">10 seconds</label>
+            <input type="radio" name="radio-timeout" id="timeout_10" class="custom" />
+            <label for="timeout_10">10 seconds</label>
 
-            <input type="radio" name="radio-exact-time" id="exact_30" class="custom" />
-            <label for="exact_30">30 seconds</label>
+            <input type="radio" name="radio-timeout" id="timeout_30" class="custom" />
+            <label for="timeout_30">30 seconds</label>
 
             </fieldset>
           </div>

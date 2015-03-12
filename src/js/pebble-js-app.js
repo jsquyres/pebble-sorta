@@ -19,23 +19,23 @@ Pebble.addEventListener('webviewclosed',
 			JSON.stringify(configuration));
 
 	    var message = new Object;
-	    if (configuration.shake_exact == "on") {
-		message.KEY_ENABLE_SHAKE_EXACT = 1;
+	    if (configuration.shake_enable == "on") {
+		message.KEY_SHAKE_ENABLE = 1;
 		// Default value
-		message.KEY_SHAKE_EXACT_TIMEOUT = 5;
+		message.KEY_SHAKE_TIMEOUT = 5;
 
-		if (configuration.exact_5 == true) {
-		    message.KEY_SHAKE_EXACT_TIMEOUT = 5;
-		} else if (configuration.exact_10 == true) {
-		    message.KEY_SHAKE_EXACT_TIMEOUT = 10;
-		} else if (configuration.exact_30 == true) {
-		    message.KEY_SHAKE_EXACT_TIMEOUT = 30;
+		if (configuration.timeout_5 == true) {
+		    message.KEY_SHAKE_TIMEOUT = 5;
+		} else if (configuration.timeout_10 == true) {
+		    message.KEY_SHAKE_TIMEOUT = 10;
+		} else if (configuration.timeout_30 == true) {
+		    message.KEY_SHAKE_TIMEOUT = 30;
 		}
 		console.log('Configuration shake=on, timeout=' +
-			    message.KEY_SHAKE_EXACT_TIMEOUT);
+			    message.KEY_SHAKE_TIMEOUT);
 	    } else {
 		console.log('Configuration shake=off. Sadness.');
-		message.KEY_ENABLE_SHAKE_EXACT = 0;
+		message.KEY_SHAKE_ENABLE = 0;
 	    }
 
 	    // Send the config message to the Pebble.  Currently

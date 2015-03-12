@@ -8,6 +8,16 @@
 #include <string.h>
 
 
+static TextLayer *s_sorta_time_layer = NULL;
+static GFont s_sorta_time_font = { 0 };
+static TextLayer *s_exact_time_layer = NULL;
+static GFont s_exact_time_font = { 0 };
+
+static bool sorta_vals_initialized = false;
+static int sorta_minute_min = 61;
+static int sorta_minute_max = -61;
+static char time_str[128] = { '\0' };
+
 static char *hour_names[] = {
     "twelve",
     "one",
@@ -46,10 +56,6 @@ static struct day_part day_parts[] = {
     { .name = NULL }
 };
 
-static bool sorta_vals_initialized = false;
-static int sorta_minute_min;
-static int sorta_minute_max;
-
 struct sorta_name {
     char *name;
     int minute_start;
@@ -67,15 +73,70 @@ static struct sorta_name sorta_names[] = {
     { .name = NULL }
 };
 
-/**********************************************************************/
 
-static char time_str[128];
+void sorta_time_window_load(Window *window) {
+    Layer *window_layer = window_get_root_layer(window);
+    GRect bounds = layer_get_bounds(window_layer);
+
+    // Exact time: middle
+    int width = bounds.size.w - margin_offset * 2;
+    int height = 50;
+    int x = margin_offset;
+    int y = 50;
+    s_exact_time_layer = text_layer_create((GRect) {
+            .origin = {
+                .x = x,
+                .y = y
+            },
+            .size = {
+                .w = width,
+                .h = height
+            }
+        });
+    s_exact_time_font =
+        fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_TIME_34));
+    text_layer_set_font(s_exact_time_layer, s_exact_time_font);
+    text_layer_set_text_alignment(s_exact_time_layer, GTextAlignmentCenter);
+    text_layer_set_background_color(s_exact_time_layer, GColorClear);
+    text_layer_set_text_color(s_exact_time_layer, GColorBlack);
+    layer_add_child(window_layer, text_layer_get_layer(s_exact_time_layer));
+
+    // Sorta time: middle
+    width = bounds.size.w - margin_offset * 2;
+    height = 130;
+    x = margin_offset;
+    y = 20;
+    s_sorta_time_layer = text_layer_create((GRect) {
+            .origin = {
+                .x = x,
+                .y = y
+            },
+            .size = {
+                .w = width,
+                .h = height
+            }
+        });
+    s_sorta_time_font =
+        fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_TIME_26));
+    text_layer_set_font(s_sorta_time_layer, s_sorta_time_font);
+    text_layer_set_text_alignment(s_sorta_time_layer, GTextAlignmentLeft);
+    text_layer_set_background_color(s_sorta_time_layer, GColorClear);
+    text_layer_set_text_color(s_sorta_time_layer, GColorBlack);
+    layer_add_child(window_layer, text_layer_get_layer(s_sorta_time_layer));
+}
+
+void sorta_time_window_unload(Window *window) {
+    text_layer_destroy(s_sorta_time_layer);
+    fonts_unload_custom_font(s_sorta_time_font);
+
+    text_layer_destroy(s_exact_time_layer);
+    fonts_unload_custom_font(s_exact_time_font);
+}
+
+/*************************************************************************/
 
 // Helper function for printing fuzzy times
 static void init_sorta_vals(void) {
-    sorta_minute_min = 61;
-    sorta_minute_max = -61;
-
     for (int i = 0; sorta_names[i].name != NULL; ++i) {
         if (sorta_names[i].minute_start < sorta_minute_min) {
             sorta_minute_min = sorta_names[i].minute_start;
@@ -89,11 +150,15 @@ static void init_sorta_vals(void) {
 }
 
 // Print a fuzzy time
-void sorta_update_sorta_time(struct tm *tm) {
+static void sorta_time_display_sorta(struct tm *tm, bool reset) {
     memset(time_str, 0, sizeof(time_str));
 
     if (!sorta_vals_initialized) {
         init_sorta_vals();
+    }
+
+    if (reset) {
+        text_layer_set_text(s_exact_time_layer, "");
     }
 
     // Get the "sorta" name
@@ -155,8 +220,12 @@ void sorta_update_sorta_time(struct tm *tm) {
 }
 
 // Print the exact time (simple: just use strftime())
-void sorta_update_exact_time(struct tm *tm) {
+static void sorta_time_display_exact(struct tm *tm, bool reset) {
     time_str[sizeof(time_str) - 1] = '\0';
+
+    if (reset) {
+        text_layer_set_text(s_sorta_time_layer, "");
+    }
 
     if (clock_is_24h_style()) {
         strftime(time_str, sizeof(time_str) - 1, "%k:%M", tm);
@@ -172,4 +241,25 @@ void sorta_update_exact_time(struct tm *tm) {
     }
 
     text_layer_set_text(s_exact_time_layer, t);
+}
+
+void sorta_time_display(struct tm *tm, sorta_display_mode_t mode) {
+    static sorta_display_mode_t last_mode = SORTA_DISPLAY_MODE_MAX;
+
+    bool reset = (last_mode == mode) ? false : true;
+
+    switch (mode) {
+    case SORTA_DISPLAY_MODE_SORTA:
+        sorta_time_display_sorta(tm, reset);
+        break;
+
+    case SORTA_DISPLAY_MODE_EXACT:
+        sorta_time_display_exact(tm, reset);
+        break;
+
+    default:
+        break;
+    }
+
+    last_mode = mode;
 }
