@@ -10,47 +10,38 @@ static GFont s_battery_charge_font = { 0 };
 static GBitmap *s_battery_icon = NULL;
 static BitmapLayer *s_battery_icon_layer = NULL;
 
+static char battery_percentage_str[8];
 static int min_battery_charge = 30;
 
 
-static void sorta_battery_handler(BatteryChargeState charge) {
-    static char battery_percentage_str[8];
-    battery_percentage_str[sizeof(battery_percentage_str) - 1] = '\0';
-
-    // Minimize battery usage: only draw something if there was a
-    // change:
-    // 1. Percentage changed
-    // 2. Plugged-in status changed
-    static BatteryChargeState last_charge = { 0 };
-
-    bool need_to_draw = false;
-    if (last_charge.charge_percent != charge.charge_percent ||
-        last_charge.is_plugged != charge.is_plugged) {
-        need_to_draw = true;
-    }
-    last_charge = charge;
-    if (!need_to_draw) {
-        return;
-    }
+static void sorta_battery_display_work(BatteryChargeState charge,
+                                       bool always_display) {
 
     // Only display the battery value if it is <=
     // <min_battery_charge>% or if it is plugged in
     if (charge.charge_percent <= min_battery_charge ||
-        charge.is_plugged) {
+        charge.is_plugged ||
+        always_display) {
         snprintf(battery_percentage_str,
                  sizeof(battery_percentage_str) - 1, "%2d%%",
                  charge.charge_percent);
     } else {
         battery_percentage_str[0] = '\0';
     }
-    text_layer_set_text(s_battery_charge_layer, battery_percentage_str);
 
-    // If we're plugged in, un-hide the battery charge icon
+    // If we're plugged in, un-hide the battery charge icon.
+    // Otherwise, hide it.
     if (charge.is_plugged) {
-        layer_set_hidden(bitmap_layer_get_layer(s_battery_icon_layer), false);
+        layer_set_hidden(bitmap_layer_get_layer(s_battery_icon_layer),
+                         false);
     } else {
-        layer_set_hidden(bitmap_layer_get_layer(s_battery_icon_layer), true);
+        layer_set_hidden(bitmap_layer_get_layer(s_battery_icon_layer),
+                         true);
     }
+}
+
+static void sorta_battery_handler(BatteryChargeState charge) {
+    sorta_battery_display_work(charge, false);
 }
 
 /*************************************************************************/
@@ -110,6 +101,11 @@ void sorta_battery_window_load(Window *window) {
     bitmap_layer_set_background_color(s_battery_icon_layer, GColorClear);
     bitmap_layer_set_bitmap(s_battery_icon_layer, s_battery_icon);
     layer_set_hidden(bitmap_layer_get_layer(s_battery_icon_layer), true);
+
+    // Setup the text buffer for the battery charge level
+    text_layer_set_text(s_battery_charge_layer, battery_percentage_str);
+
+    // Add the text layer
     layer_add_child(window_layer,
                     bitmap_layer_get_layer(s_battery_icon_layer));
 }
@@ -124,8 +120,21 @@ void sorta_battery_window_unload(Window *window) {
 /*************************************************************************/
 
 void sorta_battery_init(void) {
-    sorta_battery_handler(battery_state_service_peek());
+    sorta_battery_display_work(battery_state_service_peek(), false);
     battery_state_service_subscribe(sorta_battery_handler);
+}
+
+void sorta_battery_display(sorta_display_mode_t mode) {
+    bool always_display;
+
+    if (SORTA_DISPLAY_MODE_EXACT == mode) {
+        always_display = true;
+    } else {
+        always_display = false;
+    }
+
+    sorta_battery_display_work(battery_state_service_peek(),
+                               always_display);
 }
 
 void sorta_battery_finalize(void) {

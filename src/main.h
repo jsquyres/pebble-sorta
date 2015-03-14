@@ -29,6 +29,7 @@ void sorta_display(void);
 void sorta_battery_window_load(Window *window);
 void sorta_battery_window_unload(Window *window);
 void sorta_battery_init(void);
+void sorta_battery_display(sorta_display_mode_t mode);
 void sorta_battery_finalize(void);
 
 void sorta_time_window_load(Window *window);

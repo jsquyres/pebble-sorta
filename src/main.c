@@ -25,6 +25,7 @@ void sorta_display(void) {
 
     sorta_date_display(tm, mode);
     sorta_time_display(tm, mode);
+    sorta_battery_display(mode);
 }
 
 /*************************************************************************/
