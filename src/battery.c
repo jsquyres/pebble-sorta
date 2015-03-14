@@ -29,6 +29,8 @@ static void sorta_battery_display_work(BatteryChargeState charge,
         battery_percentage_str[0] = '\0';
     }
 
+    text_layer_set_text(s_battery_charge_layer, battery_percentage_str);
+
     // If we're plugged in, un-hide the battery charge icon.
     // Otherwise, hide it.
     if (charge.is_plugged) {
@@ -101,9 +103,6 @@ void sorta_battery_window_load(Window *window) {
     bitmap_layer_set_background_color(s_battery_icon_layer, GColorClear);
     bitmap_layer_set_bitmap(s_battery_icon_layer, s_battery_icon);
     layer_set_hidden(bitmap_layer_get_layer(s_battery_icon_layer), true);
-
-    // Setup the text buffer for the battery charge level
-    text_layer_set_text(s_battery_charge_layer, battery_percentage_str);
 
     // Add the text layer
     layer_add_child(window_layer,

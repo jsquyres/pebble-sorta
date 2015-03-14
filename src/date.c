@@ -83,9 +83,6 @@ void sorta_date_window_load(Window *window) {
     text_layer_set_background_color(s_date_layer, GColorClear);
     text_layer_set_text_color(s_date_layer, GColorBlack);
 
-    // Set the buffer for the date string
-    text_layer_set_text(s_date_layer, date_str);
-
     // Add the text layer
     layer_add_child(window_layer, text_layer_get_layer(s_date_layer));
 }
@@ -134,4 +131,6 @@ void sorta_date_display(struct tm *tm, sorta_display_mode_t mode) {
     default:
         break;
     }
+
+    text_layer_set_text(s_date_layer, date_str);
 }

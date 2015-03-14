@@ -100,9 +100,6 @@ void sorta_time_window_load(Window *window) {
     text_layer_set_text_alignment(s_exact_time_layer, GTextAlignmentCenter);
     text_layer_set_background_color(s_exact_time_layer, GColorClear);
     text_layer_set_text_color(s_exact_time_layer, GColorBlack);
-
-    // Setup the text buffer for the time
-    text_layer_set_text(s_exact_time_layer, exact_time_str);
     layer_set_hidden(text_layer_get_layer(s_exact_time_layer), true);
 
     // Add the text layer
@@ -130,9 +127,6 @@ void sorta_time_window_load(Window *window) {
     text_layer_set_background_color(s_sorta_time_layer, GColorClear);
     text_layer_set_text_color(s_sorta_time_layer, GColorBlack);
     layer_set_hidden(text_layer_get_layer(s_sorta_time_layer), true);
-
-    // Setup the text buffer for the time
-    text_layer_set_text(s_sorta_time_layer, sorta_time_str);
 
     // Add the text layer
     layer_add_child(window_layer, text_layer_get_layer(s_sorta_time_layer));
@@ -225,6 +219,7 @@ static void sorta_time_display_sorta(struct tm *tm) {
     snprintf(sorta_time_str, sizeof(sorta_time_str) - 1,
              "%s%s %s %s",
              sorta_name, hour_name, minute_name, day_part_name);
+    text_layer_set_text(s_sorta_time_layer, sorta_time_str);
 }
 
 // Print the exact time (simple: just use strftime())
@@ -232,21 +227,21 @@ static void sorta_time_display_exact(struct tm *tm) {
     layer_set_hidden(text_layer_get_layer(s_sorta_time_layer), true);
     layer_set_hidden(text_layer_get_layer(s_exact_time_layer), false);
 
-    static char tmp[sizeof(exact_time_str)];
+    char *t = exact_time_str;
     if (clock_is_24h_style()) {
-        strftime(tmp, sizeof(tmp) - 1, "%k:%M", tm);
+        strftime(t, sizeof(exact_time_str) - 1, "%k:%M", tm);
     } else {
-        strftime(tmp, sizeof(tmp) - 1, "%l:%M %P", tm);
+        strftime(t, sizeof(exact_time_str) - 1, "%l:%M %P", tm);
     }
 
     // strftime() will prefix single-digit hours with a space.  Skip
     // that space if it is there.
-    char *t = tmp;
-    if (' ' == tmp[0]) {
+    if (' ' == t[0]) {
         ++t;
     }
 
-    strncpy(exact_time_str, t, strlen(tmp));
+    // Setup the text buffer for the time
+    text_layer_set_text(s_exact_time_layer, t);
 }
 
 void sorta_time_display(struct tm *tm, sorta_display_mode_t mode) {
