@@ -13,7 +13,7 @@ short time.  Just in case you need that.
 ...but you can use the settings page in the Pebble app on your mobile
 device to disable this shake-to-exact behavior, if you wish.
 
-![Settings](https://raw.githubusercontent.com/jsquyres/pebble-sorta/master/screenshots/sorta-settings.png)
+![Settings](https://raw.githubusercontent.com/jsquyres/pebble-sorta/master/screenshots/sorta-settings-small.png)
 
 Finally, the battery percentage will appear in the top right if your
 battery is around 30% or less (or if you have it plugged in, so you
