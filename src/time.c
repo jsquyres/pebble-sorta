@@ -16,7 +16,8 @@ static GFont s_exact_time_font = { 0 };
 static bool sorta_vals_initialized = false;
 static int sorta_minute_min = 61;
 static int sorta_minute_max = -61;
-static char time_str[128] = { '\0' };
+static char sorta_time_str[128] = { '\0' };
+static char exact_time_str[16] = { '\0' };
 
 static char *hour_names[] = {
     "twelve",
@@ -99,6 +100,12 @@ void sorta_time_window_load(Window *window) {
     text_layer_set_text_alignment(s_exact_time_layer, GTextAlignmentCenter);
     text_layer_set_background_color(s_exact_time_layer, GColorClear);
     text_layer_set_text_color(s_exact_time_layer, GColorBlack);
+
+    // Setup the text buffer for the time
+    text_layer_set_text(s_exact_time_layer, exact_time_str);
+    layer_set_hidden(text_layer_get_layer(s_exact_time_layer), true);
+
+    // Add the text layer
     layer_add_child(window_layer, text_layer_get_layer(s_exact_time_layer));
 
     // Sorta time: middle
@@ -122,6 +129,12 @@ void sorta_time_window_load(Window *window) {
     text_layer_set_text_alignment(s_sorta_time_layer, GTextAlignmentLeft);
     text_layer_set_background_color(s_sorta_time_layer, GColorClear);
     text_layer_set_text_color(s_sorta_time_layer, GColorBlack);
+    layer_set_hidden(text_layer_get_layer(s_sorta_time_layer), true);
+
+    // Setup the text buffer for the time
+    text_layer_set_text(s_sorta_time_layer, sorta_time_str);
+
+    // Add the text layer
     layer_add_child(window_layer, text_layer_get_layer(s_sorta_time_layer));
 }
 
@@ -150,15 +163,12 @@ static void init_sorta_vals(void) {
 }
 
 // Print a fuzzy time
-static void sorta_time_display_sorta(struct tm *tm, bool reset) {
-    memset(time_str, 0, sizeof(time_str));
+static void sorta_time_display_sorta(struct tm *tm) {
+    layer_set_hidden(text_layer_get_layer(s_exact_time_layer), true);
+    layer_set_hidden(text_layer_get_layer(s_sorta_time_layer), false);
 
     if (!sorta_vals_initialized) {
         init_sorta_vals();
-    }
-
-    if (reset) {
-        text_layer_set_text(s_exact_time_layer, "");
     }
 
     // Get the "sorta" name
@@ -212,54 +222,44 @@ static void sorta_time_display_sorta(struct tm *tm, bool reset) {
 
     // Make the final time string by concatenating all the strings
     // together
-    snprintf(time_str, sizeof(time_str) - 1,
+    snprintf(sorta_time_str, sizeof(sorta_time_str) - 1,
              "%s%s %s %s",
              sorta_name, hour_name, minute_name, day_part_name);
-
-    text_layer_set_text(s_sorta_time_layer, time_str);
 }
 
 // Print the exact time (simple: just use strftime())
-static void sorta_time_display_exact(struct tm *tm, bool reset) {
-    time_str[sizeof(time_str) - 1] = '\0';
+static void sorta_time_display_exact(struct tm *tm) {
+    layer_set_hidden(text_layer_get_layer(s_sorta_time_layer), true);
+    layer_set_hidden(text_layer_get_layer(s_exact_time_layer), false);
 
-    if (reset) {
-        text_layer_set_text(s_sorta_time_layer, "");
-    }
-
+    static char tmp[sizeof(exact_time_str)];
     if (clock_is_24h_style()) {
-        strftime(time_str, sizeof(time_str) - 1, "%k:%M", tm);
+        strftime(tmp, sizeof(tmp) - 1, "%k:%M", tm);
     } else {
-        strftime(time_str, sizeof(time_str) - 1, "%l:%M %P", tm);
+        strftime(tmp, sizeof(tmp) - 1, "%l:%M %P", tm);
     }
 
     // strftime() will prefix single-digit hours with a space.  Skip
     // that space if it is there.
-    char *t = time_str;
-    if (' ' == time_str[0]) {
+    char *t = tmp;
+    if (' ' == tmp[0]) {
         ++t;
     }
 
-    text_layer_set_text(s_exact_time_layer, t);
+    strncpy(exact_time_str, t, strlen(tmp));
 }
 
 void sorta_time_display(struct tm *tm, sorta_display_mode_t mode) {
-    static sorta_display_mode_t last_mode = SORTA_DISPLAY_MODE_MAX;
-
-    bool reset = (last_mode == mode) ? false : true;
-
     switch (mode) {
     case SORTA_DISPLAY_MODE_SORTA:
-        sorta_time_display_sorta(tm, reset);
+        sorta_time_display_sorta(tm);
         break;
 
     case SORTA_DISPLAY_MODE_EXACT:
-        sorta_time_display_exact(tm, reset);
+        sorta_time_display_exact(tm);
         break;
 
     default:
         break;
     }
-
-    last_mode = mode;
 }
