@@ -110,9 +110,9 @@ void sorta_time_window_load(Window *window) {
 
     // Sorta time: middle
     width = bounds.size.w - margin_offset * 2;
-    height = 130;
+    height = 135;
     x = margin_offset;
-    y = 20;
+    y = 13;
     s_sorta_time_layer = text_layer_create((GRect) {
             .origin = {
                 .x = x,
