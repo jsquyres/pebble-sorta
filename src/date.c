@@ -8,10 +8,10 @@
 #include <string.h>
 
 
-static TextLayer *s_date_layer = NULL;
-static GFont s_date_font = { 0 };
+static TextLayer *s_date_layer;
+static GFont s_date_font;
 
-static char date_str[32] = { '\0' };
+static char date_str[32];
 
 static char *month_names[] = {
     "January",

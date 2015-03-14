@@ -5,10 +5,10 @@
 
 #include "main.h"
 
-static TextLayer *s_battery_charge_layer = NULL;
-static GFont s_battery_charge_font = { 0 };
-static GBitmap *s_battery_icon = NULL;
-static BitmapLayer *s_battery_icon_layer = NULL;
+static TextLayer *s_battery_charge_layer;
+static GFont s_battery_charge_font;
+static GBitmap *s_battery_icon;
+static BitmapLayer *s_battery_icon_layer;
 
 static char battery_percentage_str[8];
 static int min_battery_charge = 30;

@@ -9,7 +9,7 @@
 const int margin_offset = 5;
 
 // Local values
-static Window *s_main_window = NULL;
+static Window *s_main_window;
 
 
 

@@ -8,16 +8,16 @@
 #include <string.h>
 
 
-static TextLayer *s_sorta_time_layer = NULL;
-static GFont s_sorta_time_font = { 0 };
-static TextLayer *s_exact_time_layer = NULL;
-static GFont s_exact_time_font = { 0 };
+static TextLayer *s_sorta_time_layer;
+static GFont s_sorta_time_font;
+static TextLayer *s_exact_time_layer;
+static GFont s_exact_time_font;
 
 static bool sorta_vals_initialized = false;
 static int sorta_minute_min = 61;
 static int sorta_minute_max = -61;
-static char sorta_time_str[128] = { '\0' };
-static char exact_time_str[16] = { '\0' };
+static char sorta_time_str[128];
+static char exact_time_str[16];
 
 static char *hour_names[] = {
     "twelve",
