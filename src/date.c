@@ -11,7 +11,7 @@
 static TextLayer *s_date_layer = NULL;
 static GFont s_date_font = { 0 };
 
-static char date_str[128] = { '\0' };
+static char date_str[32] = { '\0' };
 
 static char *month_names[] = {
     "January",
@@ -82,6 +82,11 @@ void sorta_date_window_load(Window *window) {
     text_layer_set_text_alignment(s_date_layer, GTextAlignmentCenter);
     text_layer_set_background_color(s_date_layer, GColorClear);
     text_layer_set_text_color(s_date_layer, GColorBlack);
+
+    // Set the buffer for the date string
+    text_layer_set_text(s_date_layer, date_str);
+
+    // Add the text layer
     layer_add_child(window_layer, text_layer_get_layer(s_date_layer));
 }
 
@@ -107,7 +112,6 @@ static void sorta_date_display_sorta(struct tm *tm) {
 
     snprintf(date_str, sizeof(date_str) - 1, "%s%s",
              month_part, month_names[tm->tm_mon]);
-    text_layer_set_text(s_date_layer, date_str);
 }
 
 // Print the exact date
@@ -115,7 +119,6 @@ static void sorta_date_display_exact(struct tm *tm) {
     date_str[sizeof(date_str) - 1] = '\0';
 
     strftime(date_str, sizeof(date_str) - 1, "%a, %b %e, %Y", tm);
-    text_layer_set_text(s_date_layer, date_str);
 }
 
 void sorta_date_display(struct tm *tm, sorta_display_mode_t mode) {
