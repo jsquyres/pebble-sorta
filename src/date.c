@@ -47,7 +47,7 @@ static struct month_part month_parts[] = {
         .day_end = 20
     },
     {
-        .name = "late",
+        .name = "late ",
         .day_begin = 21,
         .day_end = 32
     },
