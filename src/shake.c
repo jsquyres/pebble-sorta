@@ -95,5 +95,6 @@ sorta_display_mode_t sorta_shake_get_display_mode(void) {
 }
 
 void sorta_shake_finalize(void) {
+    wakeup_cancel_all();
     accel_tap_service_unsubscribe();
 }
