@@ -18,12 +18,12 @@
 
         <div data-role="fieldcontain">
           <fieldset data-role="controlgroup">
-            <legend>Watch face colors:</legend>
+            <legend>Watchface:</legend>
             <input type="radio" name="black_text" id="black_text_on" class="custom" checked="checked"/>
-            <label for="black_text_on">Black text on white background</label>
+            <label for="black_text_on">Light background</label>
 
             <input type="radio" name="black_text" id="black_text_off" class="custom" />
-            <label for="black_text_off">White text on black background</label>
+            <label for="black_text_off">Dark background</label>
           </fieldset>
         </div>
 
