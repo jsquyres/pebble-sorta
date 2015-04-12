@@ -13,7 +13,7 @@ GColor sorta_background_color;
 /*************************************************************************/
 
 void sorta_text_settings_update(bool update_callbacks) {
-    if (sorta_black_text) {
+    if (sorta_persist_config.black_text) {
         sorta_text_color = GColorBlack;
         sorta_background_color = GColorWhite;
     } else {

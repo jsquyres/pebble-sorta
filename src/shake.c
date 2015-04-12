@@ -52,9 +52,9 @@ static void sorta_shake_handler(AccelAxisType axis, int32_t direction) {
         wakeup_service_subscribe(sorta_wakeup_restore_sorta_mode);
 
         time_t t = time(NULL);
-        display_exact_until = t + sorta_shake_timeout;
+        display_exact_until = t + sorta_persist_config.shake_timeout;
 
-        for (int i = sorta_shake_timeout; i < 120; ++i) {
+        for (int i = sorta_persist_config.shake_timeout; i < 120; ++i) {
             int ret;
             ret = wakeup_schedule(t + i, 0, false);
             if (0 == ret) {
@@ -69,7 +69,7 @@ static void sorta_shake_handler(AccelAxisType axis, int32_t direction) {
 /*************************************************************************/
 
 void sorta_shake_init(void) {
-    if (sorta_shake_enable) {
+    if (sorta_persist_config.shake_enable) {
         // Register with the Tap (shake) service
         accel_tap_service_subscribe(sorta_shake_handler);
     } else {

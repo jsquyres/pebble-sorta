@@ -21,15 +21,15 @@ void sorta_inbox_received_callback(DictionaryIterator *iterator,
     while (NULL != t) {
         switch (t->key) {
         case KEY_SHAKE_ENABLE:
-            sorta_shake_enable = (bool) t->value->int32;
+            sorta_persist_config.shake_enable = (bool) t->value->int32;
             break;
 
         case KEY_SHAKE_TIMEOUT:
-            sorta_shake_timeout = t->value->uint32;
+            sorta_persist_config.shake_timeout = t->value->uint32;
             break;
 
         case KEY_BLACK_TEXT:
-            sorta_black_text = (bool) t->value->int32;
+            sorta_persist_config.black_text = (bool) t->value->int32;
             break;
 
         default:

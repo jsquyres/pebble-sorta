@@ -54,7 +54,7 @@ static void sorta_battery_handler(BatteryChargeState charge) {
 void sorta_battery_set_text_color(void) {
     text_layer_set_text_color(s_battery_charge_layer, sorta_text_color);
 
-    if (sorta_black_text) {
+    if (sorta_persist_config.black_text) {
         bitmap_layer_set_bitmap(s_battery_icon_layer, s_battery_icon);
     } else {
         bitmap_layer_set_bitmap(s_battery_icon_layer,

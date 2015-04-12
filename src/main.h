@@ -13,9 +13,12 @@
 extern const int margin_offset;
 
 // persist.c
-extern bool sorta_shake_enable;
-extern uint32_t sorta_shake_timeout;
-extern bool sorta_black_text;
+typedef struct {
+    uint32_t shake_timeout;
+    bool shake_enable;
+    bool black_text;
+} __attribute__((__packed__)) sorta_persist_config_t;
+extern sorta_persist_config_t sorta_persist_config;
 
 // text.c
 extern GColor sorta_text_color;
