@@ -75,6 +75,13 @@ static struct sorta_name sorta_names[] = {
 };
 
 
+// This is a separate subroutine so that it can be invoked from
+// multiple places
+void sorta_time_set_text_color(void) {
+    text_layer_set_text_color(s_exact_time_layer, sorta_text_color);
+    text_layer_set_text_color(s_sorta_time_layer, sorta_text_color);
+}
+
 void sorta_time_window_load(Window *window) {
     Layer *window_layer = window_get_root_layer(window);
     GRect bounds = layer_get_bounds(window_layer);
@@ -99,7 +106,6 @@ void sorta_time_window_load(Window *window) {
     text_layer_set_font(s_exact_time_layer, s_exact_time_font);
     text_layer_set_text_alignment(s_exact_time_layer, GTextAlignmentCenter);
     text_layer_set_background_color(s_exact_time_layer, GColorClear);
-    text_layer_set_text_color(s_exact_time_layer, GColorBlack);
     layer_set_hidden(text_layer_get_layer(s_exact_time_layer), true);
 
     // Add the text layer
@@ -125,11 +131,13 @@ void sorta_time_window_load(Window *window) {
     text_layer_set_font(s_sorta_time_layer, s_sorta_time_font);
     text_layer_set_text_alignment(s_sorta_time_layer, GTextAlignmentLeft);
     text_layer_set_background_color(s_sorta_time_layer, GColorClear);
-    text_layer_set_text_color(s_sorta_time_layer, GColorBlack);
     layer_set_hidden(text_layer_get_layer(s_sorta_time_layer), true);
 
     // Add the text layer
     layer_add_child(window_layer, text_layer_get_layer(s_sorta_time_layer));
+
+    // Set the text color of both layers
+    sorta_time_set_text_color();
 }
 
 void sorta_time_window_unload(Window *window) {

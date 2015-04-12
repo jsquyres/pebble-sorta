@@ -6,7 +6,7 @@ Pebble.addEventListener('ready',
 
 Pebble.addEventListener('showConfiguration',
     function(e) {
-	Pebble.openURL('http://jeff.squyres.com/pebble-sorta/config/abi-1/');
+	Pebble.openURL('http://jeff.squyres.com/pebble-sorta/config/abi-2/');
     }
 );
 
@@ -19,6 +19,12 @@ Pebble.addEventListener('webviewclosed',
 			JSON.stringify(configuration));
 
 	    var message = new Object;
+	    if (configuration.black_text_on == true) {
+		message.KEY_BLACK_TEXT = 1;
+	    } else {
+		message.KEY_BLACK_TEXT = 0;
+	    }
+
 	    if (configuration.shake_enable == "on") {
 		message.KEY_SHAKE_ENABLE = 1;
 		// Default value

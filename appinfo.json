@@ -13,7 +13,8 @@
   },
   "appKeys": {
       "KEY_SHAKE_ENABLE": 0,
-      "KEY_SHAKE_TIMEOUT": 1
+      "KEY_SHAKE_TIMEOUT": 1,
+      "KEY_BLACK_TEXT": 2
   },
   "resources": {
     "media": [
@@ -45,6 +46,12 @@
 	    "type": "png",
 	    "name": "IMAGE_CHARGING",
 	    "file": "images/Battery-Charge-icon.png",
+	    "compatibility": "2.7"
+	},
+	{
+	    "type": "png",
+	    "name": "IMAGE_CHARGING_INVERTED",
+	    "file": "images/Battery-Charge-icon-inverted.png",
 	    "compatibility": "2.7"
 	}
     ]

@@ -12,7 +12,6 @@ const int margin_offset = 5;
 static Window *s_main_window;
 
 
-
 //
 // Called from many places; this routine displays the current date/time
 //
@@ -40,8 +39,15 @@ static void sorta_tick_handler(struct tm *tick_time,
 
 /*************************************************************************/
 
+void sorta_main_set_bg_color(void) {
+    // JMS Hrm. This gets called asynchronously, so we can't just pass
+    // in "window," like we do from window_load()/window_unload().
+    // Unfortunate.  :-(
+    window_set_background_color(s_main_window, sorta_background_color);
+}
+
 static void window_load(Window *window) {
-    window_set_background_color(window, GColorWhite);
+    sorta_main_set_bg_color();
 
     sorta_battery_window_load(window);
     sorta_date_window_load(window);
@@ -57,6 +63,12 @@ static void window_unload(Window *window) {
 /**********************************************************************/
 
 void sorta_init(void) {
+    // Read in the persistent config values
+    sorta_persist_load();
+
+    // Set the text colors from the persistent values
+    sorta_text_settings_update(false);
+
     // Main window
     s_main_window = window_create();
     window_set_window_handlers(s_main_window, (WindowHandlers) {
@@ -64,9 +76,6 @@ void sorta_init(void) {
           .unload = window_unload,
     });
     window_stack_push(s_main_window, false);
-
-    // Read in the persistent config values
-    sorta_persist_load();
 
     // Register with the accelerometer/tap (shake) service (or not)
     sorta_shake_init();

@@ -7,7 +7,8 @@
 
 enum {
     KEY_SHAKE_ENABLE = 0,
-    KEY_SHAKE_TIMEOUT = 1
+    KEY_SHAKE_TIMEOUT = 1,
+    KEY_BLACK_TEXT = 2,
 };
 
 /*************************************************************************/
@@ -27,6 +28,10 @@ void sorta_inbox_received_callback(DictionaryIterator *iterator,
             sorta_shake_timeout = t->value->uint32;
             break;
 
+        case KEY_BLACK_TEXT:
+            sorta_black_text = (bool) t->value->int32;
+            break;
+
         default:
             APP_LOG(APP_LOG_LEVEL_ERROR, "AppMessage key %d not recognized",
                     (int) t->key);
@@ -36,8 +41,10 @@ void sorta_inbox_received_callback(DictionaryIterator *iterator,
         t = dict_read_next(iterator);
     }
 
-    // Now that we have config data, update the callbacks
+    // Now that we have config data, tell everyone to update based on
+    // the new values
     sorta_shake_update();
+    sorta_text_settings_update(true);
 }
 
 void sorta_inbox_dropped_callback(AppMessageResult reason,

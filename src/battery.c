@@ -8,6 +8,7 @@
 static TextLayer *s_battery_charge_layer;
 static GFont s_battery_charge_font;
 static GBitmap *s_battery_icon;
+static GBitmap *s_battery_icon_inverted;
 static BitmapLayer *s_battery_icon_layer;
 
 static char battery_percentage_str[8];
@@ -48,6 +49,19 @@ static void sorta_battery_handler(BatteryChargeState charge) {
 
 /*************************************************************************/
 
+// This is a separate subroutine so that it can be invoked from
+// multiple places
+void sorta_battery_set_text_color(void) {
+    text_layer_set_text_color(s_battery_charge_layer, sorta_text_color);
+
+    if (sorta_black_text) {
+        bitmap_layer_set_bitmap(s_battery_icon_layer, s_battery_icon);
+    } else {
+        bitmap_layer_set_bitmap(s_battery_icon_layer,
+                                s_battery_icon_inverted);
+    }
+}
+
 void sorta_battery_window_load(Window *window) {
     Layer *window_layer = window_get_root_layer(window);
     GRect bounds = layer_get_bounds(window_layer);
@@ -73,13 +87,16 @@ void sorta_battery_window_load(Window *window) {
     text_layer_set_text_alignment(s_battery_charge_layer,
                                   GTextAlignmentLeft);
     text_layer_set_background_color(s_battery_charge_layer, GColorClear);
-    text_layer_set_text_color(s_battery_charge_layer, GColorBlack);
     layer_add_child(window_layer,
                     text_layer_get_layer(s_battery_charge_layer));
 
-    // Charging icon: top right corner
+    // Charging icons (only one will be displayed at a time): top
+    // right corner
     s_battery_icon =
         gbitmap_create_with_resource(RESOURCE_ID_IMAGE_CHARGING);
+    s_battery_icon_inverted =
+        gbitmap_create_with_resource(RESOURCE_ID_IMAGE_CHARGING_INVERTED);
+
 #ifdef PBL_PLATFORM_BASALT
     width = gbitmap_get_bounds(s_battery_icon).size.w;
     height = gbitmap_get_bounds(s_battery_icon).size.h;
@@ -101,12 +118,14 @@ void sorta_battery_window_load(Window *window) {
         });
     bitmap_layer_set_alignment(s_battery_icon_layer, GAlignLeft);
     bitmap_layer_set_background_color(s_battery_icon_layer, GColorClear);
-    bitmap_layer_set_bitmap(s_battery_icon_layer, s_battery_icon);
     layer_set_hidden(bitmap_layer_get_layer(s_battery_icon_layer), true);
 
     // Add the text layer
     layer_add_child(window_layer,
                     bitmap_layer_get_layer(s_battery_icon_layer));
+
+    // Set the text color and the appropriate bitmap
+    sorta_battery_set_text_color();
 }
 
 void sorta_battery_window_unload(Window *window) {
@@ -114,6 +133,7 @@ void sorta_battery_window_unload(Window *window) {
     fonts_unload_custom_font(s_battery_charge_font);
     bitmap_layer_destroy(s_battery_icon_layer);
     gbitmap_destroy(s_battery_icon);
+    gbitmap_destroy(s_battery_icon_inverted);
 }
 
 /*************************************************************************/

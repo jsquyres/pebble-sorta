@@ -15,6 +15,11 @@ extern const int margin_offset;
 // persist.c
 extern bool sorta_shake_enable;
 extern uint32_t sorta_shake_timeout;
+extern bool sorta_black_text;
+
+// text.c
+extern GColor sorta_text_color;
+extern GColor sorta_background_color;
 
 typedef enum {
     SORTA_DISPLAY_MODE_SORTA,
@@ -23,21 +28,27 @@ typedef enum {
 } sorta_display_mode_t;
 
 void sorta_init(void);
+void sorta_main_set_bg_color(void);
 void sorta_finalize(void);
 void sorta_display(void);
+
+void sorta_text_settings_update(bool call_updates);
 
 void sorta_battery_window_load(Window *window);
 void sorta_battery_window_unload(Window *window);
 void sorta_battery_init(void);
+void sorta_battery_set_text_color(void);
 void sorta_battery_display(sorta_display_mode_t mode);
 void sorta_battery_finalize(void);
 
 void sorta_time_window_load(Window *window);
 void sorta_time_window_unload(Window *window);
+void sorta_time_set_text_color(void);
 void sorta_time_display(struct tm *tm, sorta_display_mode_t mode);
 
 void sorta_date_window_load(Window *window);
 void sorta_date_window_unload(Window *window);
+void sorta_date_set_text_color(void);
 void sorta_date_display(struct tm *tm, sorta_display_mode_t mode);
 
 void sorta_persist_load(void);

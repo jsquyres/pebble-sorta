@@ -57,6 +57,12 @@ static struct month_part month_parts[] = {
 };
 
 
+// This is a separate subroutine so that it can be invoked from
+// multiple places
+void sorta_date_set_text_color(void) {
+    text_layer_set_text_color(s_date_layer, sorta_text_color);
+}
+
 void sorta_date_window_load(Window *window) {
     Layer *window_layer = window_get_root_layer(window);
     GRect bounds = layer_get_bounds(window_layer);
@@ -81,7 +87,7 @@ void sorta_date_window_load(Window *window) {
     text_layer_set_font(s_date_layer, s_date_font);
     text_layer_set_text_alignment(s_date_layer, GTextAlignmentCenter);
     text_layer_set_background_color(s_date_layer, GColorClear);
-    text_layer_set_text_color(s_date_layer, GColorBlack);
+    sorta_date_set_text_color();
 
     // Add the text layer
     layer_add_child(window_layer, text_layer_get_layer(s_date_layer));
