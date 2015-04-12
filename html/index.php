@@ -11,10 +11,21 @@
   <body>
     <div data-role="page" id="main">
       <div data-role="header" class="jqm-header">
-        <h1>Configuration for sorta Pebble watch face</h1>
+        <h1>sorta configuration</h1>
       </div>
 
       <div data-role="content">
+
+        <div data-role="fieldcontain">
+          <fieldset data-role="controlgroup">
+            <legend>Watch face colors:</legend>
+            <input type="radio" name="black_text" id="black_text_on" class="custom" checked="checked"/>
+            <label for="black_text_on">Black text on white background</label>
+
+            <input type="radio" name="black_text" id="black_text_off" class="custom" />
+            <label for="black_text_off">White text on black background</label>
+          </fieldset>
+        </div>
 
         <div data-role="fieldcontain">
           <label for="shake_enable">Shake to show exact time:</label>
@@ -36,16 +47,14 @@
             <input type="radio" name="radio-timeout" id="timeout_30" class="custom" />
             <label for="timeout_30">30 seconds</label>
 
-            </fieldset>
-          </div>
+          </fieldset>
         </div>
 
         <div class="ui-body ui-body-b">
           <fieldset class="ui-grid-a">
               <div class="ui-block-a"><button type="submit" data-theme="d" id="b-cancel">Cancel</button></div>
               <div class="ui-block-b"><button type="submit" data-theme="a" id="b-submit">Submit</button></div>
-            </fieldset>
-          </div>
+          </fieldset>
         </div>
       </div>
     </div>
