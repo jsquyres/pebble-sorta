@@ -5,7 +5,7 @@
 
 #include "main.h"
 
-#define SORTA_PERSIST_ABI_KEY 2
+#define SORTA_PERSIST_ABI_KEY 1
 
 #define SORTA_V2_SHAKE_ENABLE_KEY  2
 #define SORTA_V2_SHAKE_TIMEOUT_KEY 3
@@ -20,7 +20,7 @@ uint32_t sorta_shake_timeout = 5;
 bool sorta_black_text = true;
 
 // Local values
-static const int sorta_persistent_abi = SORTA_PERSIST_ABI_KEY;
+static const int sorta_persistent_abi = 2;
 
 
 // v1: initial set of values stored
