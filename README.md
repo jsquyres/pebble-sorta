@@ -4,6 +4,7 @@ Sorta is a fuzzy time watchface.  However, it shows fuzzy time
 slightly different than others.  Here's some examples:
 
 ![Sorta1](https://raw.githubusercontent.com/jsquyres/pebble-sorta/master/screenshots/sorta-just-after-245-afternoon.png)
+![Sorta2](https://raw.githubusercontent.com/jsquyres/pebble-sorta/master/screenshots/sorta-nearly-5-afternoon-inverted.png)
 
 Also, if you shake the watch, you'll see the exact time / date for a
 short time.  Just in case you need that.
