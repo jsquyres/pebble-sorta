@@ -6,7 +6,7 @@ Pebble.addEventListener('ready',
 
 Pebble.addEventListener('showConfiguration',
     function(e) {
-	Pebble.openURL('http://jeff.squyres.com/pebble-sorta/config/');
+	Pebble.openURL('http://jeff.squyres.com/pebble-sorta/config/abi-1/');
     }
 );
 
