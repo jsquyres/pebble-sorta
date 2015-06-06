@@ -82,7 +82,7 @@ void sorta_battery_window_load(Window *window) {
             }
         });
     s_battery_charge_font =
-        fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_BATTERY_14));
+        fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_ROBOTO_14));
     text_layer_set_font(s_battery_charge_layer, s_battery_charge_font);
     text_layer_set_text_alignment(s_battery_charge_layer,
                                   GTextAlignmentLeft);

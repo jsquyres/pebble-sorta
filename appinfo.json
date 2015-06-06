@@ -1,59 +1,64 @@
 {
-  "uuid": "c18860f4-462a-44e7-a1ee-25acacf66b75",
-  "shortName": "sorta",
-  "longName": "sorta",
-  "capabilities": [ "configurable" ],
-  "companyName": "Jeff Squyres",
-  "versionCode": 1,
-  "versionLabel": "1.2",
-  "sdkVersion": "3",
-  "targetPlatforms": ["aplite", "basalt"],
-  "watchapp": {
-    "watchface": true
-  },
-  "appKeys": {
-      "KEY_SHAKE_ENABLE": 0,
-      "KEY_SHAKE_TIMEOUT": 1,
-      "KEY_BLACK_TEXT": 2
-  },
-  "resources": {
-    "media": [
-	{
-	    "type": "font",
-	    "name": "FONT_BATTERY_14",
-	    "file": "fonts/RobotoCondensed-Regular.ttf",
-	    "compatibility": "2.7"
-	},
-	{
-	    "type": "font",
-	    "name": "FONT_DATE_14",
-	    "file": "fonts/RobotoCondensed-Regular.ttf",
-	    "compatibility": "2.7"
-	},
-	{
-	    "type": "font",
-	    "name": "FONT_TIME_26",
-	    "file": "fonts/Passing Notes.ttf",
-	    "compatibility": "2.7"
-	},
-	{
-	    "type": "font",
-	    "name": "FONT_TIME_34",
-	    "file": "fonts/Passing Notes.ttf",
-	    "compatibility": "2.7"
-	},
-	{
-	    "type": "png",
-	    "name": "IMAGE_CHARGING",
-	    "file": "images/Battery-Charge-icon.png",
-	    "compatibility": "2.7"
-	},
-	{
-	    "type": "png",
-	    "name": "IMAGE_CHARGING_INVERTED",
-	    "file": "images/Battery-Charge-icon-inverted.png",
-	    "compatibility": "2.7"
-	}
-    ]
-  }
+    "appKeys": {
+        "KEY_BLACK_TEXT": 2,
+        "KEY_SHAKE_ENABLE": 0,
+        "KEY_SHAKE_TIMEOUT": 1
+    },
+    "capabilities": [
+        "configurable"
+    ],
+    "companyName": "Jeff Squyres",
+    "longName": "sorta",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "compatibility": "2.7",
+                "file": "images/Battery-Charge-icon-inverted.png",
+                "name": "IMAGE_CHARGING_INVERTED",
+                "type": "png"
+            },
+            {
+                "compatibility": "2.7",
+                "file": "images/Battery-Charge-icon.png",
+                "name": "IMAGE_CHARGING",
+                "type": "png"
+            },
+            {
+                "compatibility": "2.7",
+                "file": "fonts/Passing Notes.ttf",
+                "name": "FONT_TIME_34",
+                "type": "font"
+            },
+            {
+                "compatibility": "2.7",
+                "file": "fonts/Passing Notes.ttf",
+                "name": "FONT_TIME_26",
+                "type": "font"
+            },
+            {
+                "compatibility": "2.7",
+                "file": "fonts/RobotoCondensed-Regular.ttf",
+                "name": "FONT_ROBOTO_16",
+                "type": "font"
+            },
+            {
+                "compatibility": "2.7",
+                "file": "fonts/RobotoCondensed-Regular.ttf",
+                "name": "FONT_ROBOTO_14",
+                "type": "font"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "sorta",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
+    "uuid": "c18860f4-462a-44e7-a1ee-25acacf66b75",
+    "versionLabel": "1.2",
+    "watchapp": {
+        "watchface": true
+    }
 }

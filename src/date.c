@@ -83,7 +83,7 @@ void sorta_date_window_load(Window *window) {
             }
         });
     s_date_font =
-        fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_DATE_14));
+        fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_ROBOTO_14));
     text_layer_set_font(s_date_layer, s_date_font);
     text_layer_set_text_alignment(s_date_layer, GTextAlignmentCenter);
     text_layer_set_background_color(s_date_layer, GColorClear);
