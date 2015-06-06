@@ -39,12 +39,6 @@
             {
                 "compatibility": "2.7",
                 "file": "fonts/RobotoCondensed-Regular.ttf",
-                "name": "FONT_ROBOTO_16",
-                "type": "font"
-            },
-            {
-                "compatibility": "2.7",
-                "file": "fonts/RobotoCondensed-Regular.ttf",
                 "name": "FONT_ROBOTO_14",
                 "type": "font"
             }
